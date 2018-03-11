@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+/* ====================== Main content ============================== */
+@media screen and (min-width: 800px) {
+    body {
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+/* ====================== Restaurant Filtering ====================== */
+
+@media screen and (min-width: 530px) {
+    .filter-options {
+        flex-wrap: nowrap; /*show all in one line*/
+    }
+    .filter-options div {
+        width: auto;
+    }
+
+    .filter-options select {
+        width: 180px; /**/
+    }
+}
