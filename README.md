@@ -26,5 +26,14 @@ Notes:
 
 3. Add a ServiceWorker script to cache requests to all of the site’s assets so that any page that has been visited by a user will be accessible when the user is offline. Only **caching** needs to be implemented, no other ServiceWorker features.
 
+### Installation
+
+gulp-responsive has a dependency on sharp, which in turn requires to compile native Node module.
+To be able to comile Node modules on Windows:
+https://www.npmjs.com/package/node-gyp
+Windows
+From administrative PowerShell: 
+`npm install --global --production windows-build-tools`
+`npm config set msvs_version 2015 --global`
 
 

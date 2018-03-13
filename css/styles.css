@@ -160,7 +160,8 @@ nav h1 a {
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
   display: grid;
-  grid-template-columns: 0.8fr 2.2fr;
+  grid-template-columns: 28% 72%;
+  /* grid-template-columns: 0.8fr 2.2fr; */
   grid-template-rows: auto;
   align-items: center;
   justify-items: center;
