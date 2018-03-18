@@ -1,11 +1,35 @@
 @charset "utf-8";
 
-/* ====================== Main content ============================== */
-@media screen and (min-width: 800px) {
-    body {
-        width: 800px;
+/* ====================== Restaurants list ============================== */
+@media screen and (min-width: 550px) {
+    #restaurants-list li {
+        display: block;
+        width: 40vw;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 0.5vh;
+        margin-bottom: 0.5vh;
+    }
+
+    #restaurants-list {
+        display: flex;        
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (min-width: 550px) {
+    #restaurants-list li {
+        width: 43vw;
+    }
+}
+@media screen and (min-width: 710px) {
+    #restaurants-list li {
+        width: 29vw;
+    }
+}
+@media screen and (min-width: 1000px) {
+    #restaurants-list li {
+        width: 22vw;
     }
 }
 /* ====================== Restaurant Filtering ====================== */
