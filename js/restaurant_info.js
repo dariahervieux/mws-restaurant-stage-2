@@ -61,7 +61,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const defaultRestImageUrl = DBHelper.imageUrlForRestaurant(restaurant);
   const imageUrlWithoutExtention =  defaultRestImageUrl.replace(/\.[^/.]+$/, "");
   image.src = `${imageUrlWithoutExtention}_550.jpg`;
-  image.srcset = `${imageUrlWithoutExtention}_1100.jpg 1100w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`; 
+  image.srcset = `${imageUrlWithoutExtention}_800.jpg 800w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`; 
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;

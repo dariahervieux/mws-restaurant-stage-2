@@ -8,8 +8,9 @@ gulp.task('img:process', function () {
     const config = {
       '*.jpg': [
       {
-          width: 1100,
-          rename: {suffix : '_1100'}
+          width: 800,
+          quality: 75,
+          rename: {suffix : '_800'}
       },{
           width: 550,
           rename: {suffix : '_550'}
