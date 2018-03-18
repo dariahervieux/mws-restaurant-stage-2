@@ -6,7 +6,14 @@ const rename = require('gulp-rename');
 /* generate a set of responsive images from the big source image*/
 gulp.task('img:process', function () {
     const config = {
-      '*.jpg': [{
+      '*.jpg': [
+      {
+          width: 1100,
+          rename: {suffix : '_1100'}
+      },{
+          width: 550,
+          rename: {suffix : '_550'}
+      },{
         width: 250,
         rename: {suffix : '_250'}
       },{
