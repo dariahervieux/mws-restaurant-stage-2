@@ -14,6 +14,15 @@ window.initMap = () => {
         center: restaurant.latlng,
         scrollwheel: false
       });
+      // Set title on map iframe once map has loaded
+      self.map.addListener('tilesloaded', () => {
+        const mapLinks = document.querySelectorAll('#map a');
+        mapLinks.forEach(item => item.setAttribute('tabindex','-1'));
+
+        const mapFrame = document.querySelector('#map iframe');
+        mapFrame.setAttribute('title', `Google maps with ${restaurant.name} restaurant location`);       
+      });
+
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }

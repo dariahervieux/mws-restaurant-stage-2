@@ -25,10 +25,10 @@
         max-width: calc(50% - 20px);
         padding: 0 10px;
         order: 4;
-        background-color: unset;
+        margin-bottom: unset;
     }
     #restaurant-img {
-        max-width: 240px;
+        max-width: 50%;
         margin-top: auto;
         margin-bottom: auto;
         order: 3;
@@ -44,18 +44,15 @@
 }
 
 @media screen and (min-width: 960px) {
-    /* #maincontent {
-        flex-wrap: nowrap;  
-    } */
     #content, #map {
         height: calc(100vh - 124px - 30px - 0.7rem); /*header, footer padding, footer font*/
     }
     #content {
-        width: 470px;        
+        width: 40vw;
         overflow: scroll;
     }
     #map {
-        width: calc(100vw - 470px);
+        width: 60vw;
         position: absolute;
         overflow: hidden;
         top: 124px;
