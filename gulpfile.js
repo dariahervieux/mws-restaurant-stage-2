@@ -28,13 +28,13 @@ gulp.task('img:process', function () {
         quality: 95,
         errorOnUnusedImage: false
       }))
-      .pipe(gulp.dest('img'));
+      .pipe(gulp.dest('photos'));
   });
 
 
   gulp.task('img:clean', function () {
       return del([
-        'img/**/*'
+        'photos/**/*'
       ]);    
   });
 

@@ -2,6 +2,11 @@ let restaurant;
 var map;
 
 /**
+ * Register SW for current page
+ */
+registerServiceWorker();
+
+/**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
