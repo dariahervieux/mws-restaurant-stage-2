@@ -1,8 +1,11 @@
 var staticCacheName = 'mws-restaurant-static-v1';
+var dynamicCacheName = 'mws-restaurant-dynamic-v1';
 var contentImgsCache = 'mws-restaurant-imgs';
+
 var allCaches = [
   staticCacheName,
-  contentImgsCache
+  contentImgsCache,
+  dynamicCacheName
 ];
 
 //cache all static resources
@@ -20,7 +23,9 @@ self.addEventListener('install', function(event) {
         'css/responsive-details.css',
         'img/image_not_available.png',
         'index.html',
-        'restaurant.html'
+        'restaurant.html',
+        'https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2',
+        'https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fBBc4.woff2'
       ]);
     })
   );
@@ -62,16 +67,15 @@ self.addEventListener('fetch', function(event) {
       return;
     }    
   }
-  //default - get from cache then fetch if not found
+  //default - get from cache then fetch and cache if not found
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || 
-        fetch(event.request).catch(error => {
-          console.error('Network error', error);
-          // return new Response('No content available',
-          //         {headers: {'Content-Type': 'text/html'}}
-          // );
-          throw error;
+    caches.match(event.request).then(function(cacheResponse) {
+      return cacheResponse || 
+        fetch(event.request).then(function(networkResponse) {
+          return caches.open(dynamicCacheName).then(function(cache) {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
         });
     })
   );
@@ -110,9 +114,7 @@ async function servePhoto(request) {
     errorToThrow = error;
   }
 
-  if(toReturn) {
-    return toReturn;
-  }
+  if (toReturn) return toReturn;
 
   throw errorToThrow;
 }

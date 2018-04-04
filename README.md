@@ -29,11 +29,13 @@ Notes:
 ### Installation
 
 gulp-responsive has a dependency on sharp, which in turn requires to compile native Node module.
-To be able to comile Node modules on Windows:
+To be able to compile Node modules on Windows:
 https://www.npmjs.com/package/node-gyp
-Windows
+
 From administrative PowerShell: 
 `npm install --global --production windows-build-tools`
 `npm config set msvs_version 2015 --global`
+
+For more information please refer to https://github.com/chjj/pty.js/issues/60.
 
 
