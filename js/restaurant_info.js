@@ -77,6 +77,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   image.src = `${imageUrlWithoutExtention}_550.jpg`;
   image.srcset = `${imageUrlWithoutExtention}_800.jpg 800w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`; 
 
+  image.alt = `${restaurant.name} restaurant`;
+
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
 
@@ -166,6 +168,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  li.setAttribute('aria-current', 'page'); /*optional*/ 
   breadcrumb.appendChild(li);
 }
 
