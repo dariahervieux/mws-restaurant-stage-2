@@ -1,14 +1,13 @@
-# Mobile Web Specialist Certification Course
----
-#### _Three Stage Course Material Project - Restaurant Reviews_
+#  Mobile Web Specialist Certification Course - Evaluation project -  "Mobile Web Specialist Restaurant Reviews App: Stage 1"
 
-## Project Overview: Stage 1
+**Restaurant Reviews** Stage 1 project.
 
-For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
+**Restaurant Reviews** are evaluation projects under [Udacity's Mobile Web Specialist Nanodegree](https://www.udacity.com/course/mobile-web-specialist-nanodegree--nd024). One needs incrementally convert a static webpage to a mobile-ready web application.
 
-### Note about ES6
 
-Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. 
+## Project Overview
+
+In **Stage One**, one should take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. One must also add a service worker to begin the process of creating a seamless offline experience for your users.
 
 ### Task specification
 
@@ -26,16 +25,44 @@ Notes:
 
 3. Add a ServiceWorker script to cache requests to all of the site’s assets so that any page that has been visited by a user will be accessible when the user is offline. Only **caching** needs to be implemented, no other ServiceWorker features.
 
-### Installation
+## Getting started
+
+This section contains some instructions to build and run the project.
+
+### Prerequisites
+
+To install:
+1. [Node.js](https://nodejs.org/en/) - JavaScript runtime
+2. [node-gyp](https://www.npmjs.com/package/node-gyp) - command-line tool to compile native addon modules for Node.js
+3. [gulp](https://gulpjs.com/) - build automation tool
+4. [http-server](https://www.npmjs.com/package/http-server) - simple https server
+
+#### Installation notes
 
 gulp-responsive has a dependency on sharp, which in turn requires to compile native Node module.
-To be able to compile Node modules on Windows:
-https://www.npmjs.com/package/node-gyp
+To compile Node modules [node-gyp](https://www.npmjs.com/package/node-gyp) is used.
 
-From administrative PowerShell: 
+To be able to use it on on Windows, install `windows-build-tools`.
+From administrative PowerShell run the following commands: 
 `npm install --global --production windows-build-tools`
 `npm config set msvs_version 2015 --global`
 
 For more information please refer to https://github.com/chjj/pty.js/issues/60.
+
+### Install
+
+After cloning the project run `npm install` from the root folder.
+
+### Build
+
+From the root folder run `gulp`. This runs projet's task in a sequence:
+
+1. 'img:clean' - cleaning previously generated images
+2. 'img:process' - generating a set of responsive images (different resolution and compression level) based on a source image.
+
+### Run
+
+Serving application on localhost:8080 :
+`npm start`
 
 
