@@ -5,6 +5,11 @@ const rename = require('gulp-rename');
 //getting dist dependencies from npm_modules
 var npmDist = require('gulp-npm-dist');
 var log = require('fancy-log');
+//css-relasted
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+
+var browserSync = require('browser-sync').create();
 
 gulp.task('img:copy', function () {
   return gulp.src(['img/**/*'])
@@ -45,7 +50,7 @@ gulp.task('img:process', gulp.series('img:copy', function () {
       ]);    
   });
 
-  // Copy dependencies to ./build/js/libs/
+  /* Copy dependencies to ./build/js/libs/ */
   //TODO: gulp-ignore to exlude gulpfile.js
   gulp.task('libs:copy', function() {
     let deps = npmDist();
@@ -73,19 +78,39 @@ gulp.task('img:process', gulp.series('img:copy', function () {
       .pipe(gulp.dest('./build/'));
   });
 
-  gulp.task('css:copy', function() {
-    return gulp.src('./css/**/*')
-      .pipe(gulp.dest('./build/css'));
+  gulp.task('css:process', function() {
+    return gulp.src(['sass/**/*.scss'])
+      .pipe(sass().on('error', sass.logError))
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions']
+        }))
+      .pipe(gulp.dest('build/css'));
   });
 
-  gulp.task('copy',  gulp.series(['css:copy', 'js:copy', 'html:copy','libs:copy']));
 
+  gulp.task('process', gulp.series(['css:process', 'img:process']));
+  gulp.task('copy',  gulp.series(['js:copy', 'html:copy','libs:copy']));
   gulp.task('clean', function() {
     return del([
       'build/**/*'
     ]); 
   });
 
-  var npmDist = require('gulp-npm-dist');
+  gulp.task('attach', function() {
+    browserSync.init({
+      // URL of the website we want to proxy
+      proxy: 'http://127.0.0.1:8080'
+    });
+  });
 
-  gulp.task('default', gulp.series(['clean', 'copy', 'img:process']));
+  gulp.task('watch', function() {
+    gulp.watch('sass/**/*.scss', gulp.series(['css:process']));
+    gulp.watch('js/**/*.js', gulp.series(['js:copy']))
+      .on('change', function(path, stats) {
+        console.log('File ' + path + ' was changed');
+      });
+    gulp.watch('*.html', gulp.series(['html:copy']));
+    gulp.watch('build/**', browserSync.reload);
+  });
+
+  gulp.task('default', gulp.parallel([gulp.series(['clean', 'copy', 'process', 'watch']), 'attach']));

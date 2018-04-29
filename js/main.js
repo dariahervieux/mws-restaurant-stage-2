@@ -1,4 +1,5 @@
 import DBHelper from './dbhelper.js';
+
 let restaurants,
   neighborhoods,
   cuisines;
@@ -213,6 +214,8 @@ let createRestaurantHTML = (restaurant) => {
  * Add markers for current restaurants to the map.
  */
 let addMarkersToMap = (restaurants = self.restaurants) => {
+  if(!google) return;
+
   restaurants.forEach(restaurant => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
