@@ -1,13 +1,13 @@
 {
-  "name": "mws_stage_1",
+  "name": "mws_stage_2",
   "version": "1.0.0",
-  "description": "Mobile Web Specialist - Certification Project - Stage 1",
+  "description": "Mobile Web Specialist - Certification Project - Stage 2",
   "scripts": {
-    "start": "http-server"
+    "start": "http-server build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dariahervieux/mws-restaurant-stage-1.git"
+    "url": "git+https://github.com/dariahervieux/mws-restaurant-stage-2.git"
   },
   "author": "",
   "license": "",
@@ -17,11 +17,16 @@
   "homepage": "https://github.com/dariahervieux/mws-restaurant-stage-1#readme",
   "devDependencies": {
     "del": "^3.0.0",
+    "fancy-log": "^1.3.2",
     "gulp": "^4.0.0",
     "gulp-concat": "latest",
     "gulp-connect": "latest",
+    "gulp-npm-dist": "^1.0.1",
     "gulp-rename": "latest",
     "gulp-responsive": "latest",
-    "gulp-uglify": "latest"
+    "gulp-uglify": "^3.0.0"
+  },
+  "dependencies": {
+    "idb": "^2.1.1"
   }
 }

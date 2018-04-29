@@ -1,4 +1,4 @@
-registerServiceWorker = () =>  {
+let registerServiceWorker = () =>  {
   if (!navigator.serviceWorker) return;
   
   window.addEventListener('load', function() {

@@ -2,9 +2,17 @@ const gulp = require('gulp');
 const del = require('del');
 const responsive = require('gulp-responsive');
 const rename = require('gulp-rename');
+//getting dist dependencies from npm_modules
+var npmDist = require('gulp-npm-dist');
+var log = require('fancy-log');
+
+gulp.task('img:copy', function () {
+  return gulp.src(['img/**/*'])
+  .pipe(gulp.dest('build/img'));
+});
 
 /* generate a set of responsive images from the big source image*/
-gulp.task('img:process', function () {
+gulp.task('img:process', gulp.series('img:copy', function () {
     const config = {
       '*.jpg': [
       {
@@ -28,14 +36,56 @@ gulp.task('img:process', function () {
         quality: 95,
         errorOnUnusedImage: false
       }))
-      .pipe(gulp.dest('photos'));
-  });
-
+      .pipe(gulp.dest('build/photos'));
+  }));
 
   gulp.task('img:clean', function () {
       return del([
-        'photos/**/*'
+        'build/photos/**/*'
       ]);    
   });
 
-  gulp.task('default', gulp.series(['img:clean', 'img:process']));
+  // Copy dependencies to ./build/js/libs/
+  //TODO: gulp-ignore to exlude gulpfile.js
+  gulp.task('libs:copy', function() {
+    let deps = npmDist();
+    // deps.push('!./node_modules/**/gulpfile.js');
+    // deps.push('!./node_modules/**/package.json');
+    // deps.push('!./node_modules/**/yarn.*');
+    // deps.push('!./node_modules/**/LICENSE');
+    // deps.push('!./node_modules/**/test/**');
+    // deps.push('!./node_modules/**/*.ts');
+    log('****List', deps);
+    return gulp.src(deps, {base:'./node_modules'})
+      .pipe(rename(function(path) {
+        path.dirname = path.dirname.replace(/\/lib/, '').replace(/\\lib/, '');
+      }))
+      .pipe(gulp.dest('./build/js/libs'));
+  });
+
+  gulp.task('js:copy', function() {
+    return gulp.src(['./**/*.js','!gulpfile.js','!./node_modules/**/*'])
+      .pipe(gulp.dest('build'));
+  });
+
+  gulp.task('html:copy', function() {
+    return gulp.src('./*.html')
+      .pipe(gulp.dest('./build/'));
+  });
+
+  gulp.task('css:copy', function() {
+    return gulp.src('./css/**/*')
+      .pipe(gulp.dest('./build/css'));
+  });
+
+  gulp.task('copy',  gulp.series(['css:copy', 'js:copy', 'html:copy','libs:copy']));
+
+  gulp.task('clean', function() {
+    return del([
+      'build/**/*'
+    ]); 
+  });
+
+  var npmDist = require('gulp-npm-dist');
+
+  gulp.task('default', gulp.series(['clean', 'copy', 'img:process']));

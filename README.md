@@ -7,7 +7,7 @@
 
 ## Project Overview
 
-In **Stage One**, one should take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. One must also add a service worker to begin the process of creating a seamless offline experience for your users.
+In **Stage Two**, one will take the responsive, accessible design she built in Stage One and connect it to an external server. One will begin by using asynchronous JavaScript to request JSON data from the server. One will store data received from the server in an offline database using IndexedDB, which will create an app shell architecture. Finally, one will work to optimize your site to meet performance benchmarks (testing using Lighthouse).
 
 ### Task specification
 

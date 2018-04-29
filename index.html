@@ -29,12 +29,12 @@
           <h2>Filter Results</h2>
         </div>
         <div>
-          <select id="neighborhoods-select" aria-label="Neighborhoods" name="neighborhoods" onchange="updateRestaurants()">
+          <select id="neighborhoods-select" aria-label="Neighborhoods" name="neighborhoods" onchange="self.updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>
         </div>
         <div>
-          <select id="cuisines-select" aria-label="Cusines" name="cuisines" onchange="updateRestaurants()">
+          <select id="cuisines-select" aria-label="Cusines" name="cuisines" onchange="self.updateRestaurants()">
             <option value="all">All Cuisines</option>
           </select>
       </div>
@@ -44,8 +44,9 @@
   </main>
 
   <script type="application/javascript" charset="utf-8" src="js/common.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script type="module" charset="utf-8" src="js/dbhelper.js"></script>
+  <script type="module" charset="utf-8" src="js/main.js"></script>
+  <script type="module" charset="utf-8" src="js/libs/idb/idb.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=initMap"></script>
 
 

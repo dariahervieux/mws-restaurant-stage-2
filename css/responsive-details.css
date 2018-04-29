@@ -41,6 +41,9 @@
         margin-left: auto;
         margin-right: auto;
     }
+    #map {
+        width: 800px;
+    }
 }
 
 @media screen and (min-width: 960px) {
@@ -63,4 +66,18 @@
     body {
         overflow: hidden; /*fixing scrolls*/
     }    
+}
+
+@media screen and (min-width: 1800px) {
+    body {
+        width: 1800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #content {
+        width: 720px;
+    }
+    #map {
+        width: 1080px;
+    }
 }

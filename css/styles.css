@@ -237,6 +237,10 @@ nav h1 a {
   max-width: 100%;
 }
 
+.restaurant-img-none {
+  display: none;
+}
+
 #restaurant-address {
   font-size: 1rem;
 }
