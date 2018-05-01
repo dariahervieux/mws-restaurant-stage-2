@@ -1,6 +1,4 @@
 import DBHelper from './dbhelper.js';
-let restaurant;
-let map;
 
 /**DBHelper instance  */
 let dbHelper;
@@ -16,28 +14,28 @@ registerServiceWorker();
 window.initMap = () => {
   dbHelper = new DBHelper();
   dbHelper.initData()
-  .then( () => {
-    const callback = (error, restaurant) => {
-      if (error) { // Got an error!
-        console.error(error);
-      } else {
-        self.map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: restaurant.latlng,
-          scrollwheel: false
-        });
-        // Set title on map iframe once map has loaded
-        self.map.addListener('tilesloaded', () => {
-          const mapFrame = document.querySelector('#map iframe');
-          mapFrame.setAttribute('title', `Google map with ${restaurant.name} restaurant location`);
-        });
+    .then(() => {
+      const callback = (error, restaurant) => {
+        if (error) { // Got an error!
+          console.error(error);
+        } else {
+          self.map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: restaurant.latlng,
+            scrollwheel: false
+          });
+          // Set title on map iframe once map has loaded
+          self.map.addListener('tilesloaded', () => {
+            const mapFrame = document.querySelector('#map iframe');
+            mapFrame.setAttribute('title', `Google map with ${restaurant.name} restaurant location`);
+          });
 
-        fillBreadcrumb();
-        DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+          fillBreadcrumb();
+          DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+        }
       }
-    }
-    fetchRestaurantFromURL(callback);
-  });
+      fetchRestaurantFromURL(callback);
+    });
 }
 
 /**
@@ -79,10 +77,10 @@ let fillRestaurantHTML = (restaurant = self.restaurant) => {
   //image.className = 'restaurant-img';
 
   const defaultRestImageUrl = DBHelper.imageUrlForRestaurant(restaurant);
-  if(defaultRestImageUrl) {
-    const imageUrlWithoutExtention =  defaultRestImageUrl.replace(/\.[^/.]+$/, "");
+  if (defaultRestImageUrl) {
+    const imageUrlWithoutExtention = defaultRestImageUrl.replace(/\.[^/.]+$/, "");
     image.src = `${imageUrlWithoutExtention}_550.jpg`;
-    image.srcset = `${imageUrlWithoutExtention}_800.jpg 800w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`; 
+    image.srcset = `${imageUrlWithoutExtention}_800.jpg 800w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`;
   } else {
     image.className = 'restaurant-img-none';
   }
@@ -156,8 +154,8 @@ let createReviewHTML = (review) => {
 
   const rating = document.createElement('p');
   let i = review.rating;
-  let ratingStars = (i==0) ? 'Not rated' : '';
-  while(i-- > 0) {
+  let ratingStars = (i == 0) ? 'Not rated' : '';
+  while (i-- > 0) {
     ratingStars += '★';
   }
   rating.innerHTML = `Rating: <span class="stars">${ratingStars}</span>`;
@@ -173,11 +171,11 @@ let createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-let fillBreadcrumb = (restaurant=self.restaurant) => {
+let fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
-  li.setAttribute('aria-current', 'page'); /*optional*/ 
+  li.setAttribute('aria-current', 'page'); /*optional*/
   breadcrumb.appendChild(li);
 }
 

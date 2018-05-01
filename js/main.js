@@ -1,14 +1,8 @@
+/* eslint-env browser */
 import DBHelper from './dbhelper.js';
-
-let restaurants,
-  neighborhoods,
-  cuisines;
-let map;
-let markers = [];
 
 /**DBHelper instance  */
 let dbHelper;
-
 
 /**
  * Register SW for current page
@@ -21,11 +15,11 @@ registerServiceWorker();
 document.addEventListener('DOMContentLoaded', (event) => {
   dbHelper = new DBHelper();
   dbHelper.initData()
-  .then( () => {
-    fetchNeighborhoods();
-    fetchCuisines();
-    self.updateRestaurants();
-  });
+    .then(() => {
+      fetchNeighborhoods();
+      fetchCuisines();
+      self.updateRestaurants();
+    });
 });
 
 /**
@@ -98,9 +92,9 @@ window.initMap = () => {
   });
   // Set title on map iframe once map has loaded
   self.map.addListener('tilesloaded', () => {
-      const mapFrame = document.querySelector('#map iframe');
-      mapFrame.setAttribute('title', 'Google map with restaurant locations');
-    }
+    const mapFrame = document.querySelector('#map iframe');
+    mapFrame.setAttribute('title', 'Google map with restaurant locations');
+  }
   );
 }
 
@@ -138,7 +132,7 @@ let resetRestaurants = (restaurants) => {
   ul.innerHTML = '';
 
   // Remove all map markers
-  if(self.markers) {
+  if (self.markers) {
     self.markers.forEach(m => m.setMap(null));
   }
   self.markers = [];
@@ -167,20 +161,20 @@ let fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 let createRestaurantImageDomElement = (restaurant) => {
   const image = document.createElement('img');
-  image.className = 'restaurant-img'; 
+  image.className = 'restaurant-img';
 
   const defaultRestImageUrl = DBHelper.imageUrlForRestaurant(restaurant);
-  if(defaultRestImageUrl) {
-    const imageUrlWithoutExtention =  defaultRestImageUrl.replace(/\.[^/.]+$/, "");
-    image.sizes ="28vw";
+  if (defaultRestImageUrl) {
+    const imageUrlWithoutExtention = defaultRestImageUrl.replace(/\.[^/.]+$/, "");
+    image.sizes = "28vw";
     image.src = `${imageUrlWithoutExtention}_250.jpg`;
-    image.srcset = `${imageUrlWithoutExtention}_250.jpg 250w, ${imageUrlWithoutExtention}_150.jpg 150w`; 
+    image.srcset = `${imageUrlWithoutExtention}_250.jpg 250w, ${imageUrlWithoutExtention}_150.jpg 150w`;
   } else {
     image.src = `img/image_not_available.png`;
   }
   image.alt = `${restaurant.name} restaurant`;
   return image;
- }
+}
 
 /**
  * Create restaurant HTML.
@@ -214,7 +208,7 @@ let createRestaurantHTML = (restaurant) => {
  * Add markers for current restaurants to the map.
  */
 let addMarkersToMap = (restaurants = self.restaurants) => {
-  if(!google) return;
+  if (!google) return;
 
   restaurants.forEach(restaurant => {
     // Add marker to the map
