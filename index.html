@@ -3,7 +3,6 @@
 
 <head>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/responsive.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
@@ -43,11 +42,38 @@
     </section>
   </main>
 
-  <script type="application/javascript" charset="utf-8" src="js/common.js"></script>
-  <script type="module" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="module" charset="utf-8" src="js/main.js"></script>
-  <script type="module" charset="utf-8" src="js/libs/idb/idb.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=initMap"></script>
+  <script>
+    /**
+     * Initialize Google map, called from HTML.
+     */
+    window.initMap = () => {
+      let loc = {
+        lat: 40.722216,
+        lng: -73.987501
+      };
+
+      if (typeof google === "undefined") { 
+        console.error('google is not defined!');
+        return;
+      }
+      
+      self.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: loc,
+        scrollwheel: false
+      });
+      // Set title on map iframe once map has loaded
+      self.map.addListener('tilesloaded', () => {
+        const mapFrame = document.querySelector('#map iframe');
+        mapFrame.setAttribute('title', 'Google map with restaurant locations');
+      }
+      );
+    }
+  </script>
+
+  <!-- <script defer type="module" charset="utf-8" src="js/libs/idb/idb.js"></script> -->
+  <script defer type="module" charset="utf-8" src="js/main.js"></script>
+  <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=window.initMap"></script> -->
 
 
   <footer id="footer">

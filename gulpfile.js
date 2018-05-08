@@ -3,11 +3,12 @@ const gulp = require('gulp');
 const del = require('del');
 const rename = require('gulp-rename');
 const log = require('fancy-log');
+const gulpif = require('gulp-if');
 
 //getting dist dependencies from npm_modules
 const npmDist = require('gulp-npm-dist');
 
-//css-relasted
+//css-related
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
 
@@ -17,8 +18,14 @@ const responsive = require('gulp-responsive');
 //live editing
 const browserSync = require('browser-sync').create();
 
-//code check
+//js-related
 const eslint = require('gulp-eslint');
+const uglify = require('gulp-uglify-es').default;
+
+const rollup = require('gulp-rollup');
+const commonjs = require('rollup-plugin-commonjs');
+const resolve = require('rollup-plugin-node-resolve');
+const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('img:copy', function () {
   return gulp.src(['img/**/*'])
@@ -28,7 +35,7 @@ gulp.task('img:copy', function () {
 /* generate a set of responsive images from the set of big images*/
 gulp.task('img:process', gulp.series('img:copy', function () {
   const config = {
-    '*.jpg': [
+    '*.webp': [
       {
         width: 800,
         quality: 75,
@@ -45,7 +52,7 @@ gulp.task('img:process', gulp.series('img:copy', function () {
       }]
   };
 
-  return gulp.src('img_src/*.jpg')
+  return gulp.src('img_src/*.webp')
     .pipe(responsive(config, {
       // global quality for all images
       quality: 95,
@@ -60,26 +67,44 @@ gulp.task('img:clean', function () {
   ]);
 });
 
-/* Copy dependencies to ./build/js/libs/ */
-gulp.task('libs:copy', function () {
-  let deps = npmDist();
-  // deps.push('!./node_modules/**/gulpfile.js');
-  // deps.push('!./node_modules/**/package.json');
-  // deps.push('!./node_modules/**/yarn.*');
-  // deps.push('!./node_modules/**/LICENSE');
-  // deps.push('!./node_modules/**/test/**');
-  // deps.push('!./node_modules/**/*.ts');
-  log('****List', deps);
-  return gulp.src(deps, { base: './node_modules' })
-    .pipe(rename(function (path) {
-      path.dirname = path.dirname.replace(/\/lib/, '').replace(/\\lib/, '');
-    }))
-    .pipe(gulp.dest('./build/js/libs'));
+
+//get options from the command line
+var args = require('minimist')(process.argv.slice(2));
+log(args);
+
+var compact = args.compress || false;  
+compact = (compact === 'true') ? true : false;
+
+
+gulp.task('js:sw:copy', function () {
+  return gulp.src(['sw.js'])
+    .pipe(gulpif(compact, uglify()))  
+    .pipe(gulp.dest('build'));
 });
 
+
 gulp.task('js:copy', function () {
-  return gulp.src(['./**/*.js', '!gulpfile.js', '!./node_modules/**/*'])
-    .pipe(gulp.dest('build'));
+  let deps = npmDist();
+  return gulp.src(['./js/restaurant_info.js','./js/common.js','./js/dbhelper.js','./js/main.js', './node_modules/idb/**/*.js']/*.concat(deps)*/)
+    .pipe(sourcemaps.init())
+    .pipe(rollup({
+      // entry points
+      input: ['./js/main.js', './js/restaurant_info.js'],
+      output: {
+        format: 'es'
+      },
+      plugins: [
+        resolve(),
+        //there is bug with the current version ("rollup-plugin-commonjs": "^9.1.3"), using 8.4.1 instead
+        commonjs({
+          // if false then skip sourceMap generation for CommonJS modules
+          sourceMap: false
+        })
+      ]    
+    }))
+    .pipe(gulpif(compact, uglify()))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('build/js'));
 });
 
 gulp.task('html:copy', function () {
@@ -98,7 +123,7 @@ gulp.task('css:process', function () {
 
 
 gulp.task('process', gulp.series(['css:process', 'img:process']));
-gulp.task('copy', gulp.series(['js:copy', 'html:copy', 'libs:copy']));
+gulp.task('copy', gulp.series(['js:sw:copy', 'js:copy', 'html:copy']));
 gulp.task('clean', function () {
   return del([
     'build/**/*'
@@ -119,6 +144,7 @@ gulp.task('watch', function () {
       log('File ' + path + ' was changed');
     });
   gulp.watch('*.html', gulp.series(['html:copy']));
+  gulp.watch('sw.js', gulp.series(['js:sw:copy']));
   gulp.watch('build/**', browserSync.reload);
 });
 
@@ -134,4 +160,4 @@ gulp.task('lint', () => {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('default', gulp.parallel([gulp.series(['lint', 'clean', 'copy', 'process', 'watch']), 'attach']));
+gulp.task('default', gulp.series(['lint', 'clean', 'copy', 'process', 'watch']));

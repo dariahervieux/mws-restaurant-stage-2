@@ -1,3 +1,4 @@
+import registerServiceWorker from './common.js';
 import DBHelper from './dbhelper.js';
 
 /**DBHelper instance  */
@@ -8,35 +9,21 @@ let dbHelper;
  */
 registerServiceWorker();
 
-/**
- * Initialize Google map, called from HTML.
- */
-window.initMap = () => {
+
+window.addEventListener('load', () => {
   dbHelper = new DBHelper();
   dbHelper.initData()
     .then(() => {
-      const callback = (error, restaurant) => {
+      const callback = (error) => {
         if (error) { // Got an error!
           console.error(error);
         } else {
-          self.map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 16,
-            center: restaurant.latlng,
-            scrollwheel: false
-          });
-          // Set title on map iframe once map has loaded
-          self.map.addListener('tilesloaded', () => {
-            const mapFrame = document.querySelector('#map iframe');
-            mapFrame.setAttribute('title', `Google map with ${restaurant.name} restaurant location`);
-          });
-
           fillBreadcrumb();
-          DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
         }
       }
       fetchRestaurantFromURL(callback);
     });
-}
+});
 
 /**
  * Get current restaurant from page URL.
@@ -79,8 +66,8 @@ let fillRestaurantHTML = (restaurant = self.restaurant) => {
   const defaultRestImageUrl = DBHelper.imageUrlForRestaurant(restaurant);
   if (defaultRestImageUrl) {
     const imageUrlWithoutExtention = defaultRestImageUrl.replace(/\.[^/.]+$/, "");
-    image.src = `${imageUrlWithoutExtention}_550.jpg`;
-    image.srcset = `${imageUrlWithoutExtention}_800.jpg 800w, ${imageUrlWithoutExtention}_550.jpg 550w, ${imageUrlWithoutExtention}_250.jpg 250w`;
+    image.src = `${imageUrlWithoutExtention}_550.webp`;
+    image.srcset = `${imageUrlWithoutExtention}_800.webp 800w, ${imageUrlWithoutExtention}_550.webp 550w, ${imageUrlWithoutExtention}_250.webp 250w`;
   } else {
     image.className = 'restaurant-img-none';
   }

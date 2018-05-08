@@ -1,4 +1,5 @@
 /* eslint-env browser */
+import registerServiceWorker from './common.js';
 import DBHelper from './dbhelper.js';
 
 /**DBHelper instance  */
@@ -10,9 +11,33 @@ let dbHelper;
 registerServiceWorker();
 
 /**
+ * Update page and map for current restaurants.
+ * In Window scope
+ */
+window.updateRestaurants = () => {
+  const cSelect = document.getElementById('cuisines-select');
+  const nSelect = document.getElementById('neighborhoods-select');
+
+  const cIndex = cSelect.selectedIndex;
+  const nIndex = nSelect.selectedIndex;
+
+  const cuisine = cSelect[cIndex].value;
+  const neighborhood = nSelect[nIndex].value;
+
+  dbHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    if (error) { // Got an error!
+      console.error(error);
+    } else {
+      resetRestaurants(restaurants);
+      fillRestaurantsHTML();
+    }
+  })
+}
+
+/**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('load', () => {
   dbHelper = new DBHelper();
   dbHelper.initData()
     .then(() => {
@@ -77,50 +102,6 @@ let fillCuisinesHTML = (cuisines = self.cuisines) => {
   });
 }
 
-/**
- * Initialize Google map, called from HTML.
- */
-window.initMap = () => {
-  let loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-  self.map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: loc,
-    scrollwheel: false
-  });
-  // Set title on map iframe once map has loaded
-  self.map.addListener('tilesloaded', () => {
-    const mapFrame = document.querySelector('#map iframe');
-    mapFrame.setAttribute('title', 'Google map with restaurant locations');
-  }
-  );
-}
-
-/**
- * Update page and map for current restaurants.
- * In Window scope
- */
-window.updateRestaurants = () => {
-  const cSelect = document.getElementById('cuisines-select');
-  const nSelect = document.getElementById('neighborhoods-select');
-
-  const cIndex = cSelect.selectedIndex;
-  const nIndex = nSelect.selectedIndex;
-
-  const cuisine = cSelect[cIndex].value;
-  const neighborhood = nSelect[nIndex].value;
-
-  dbHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
-      resetRestaurants(restaurants);
-      fillRestaurantsHTML();
-    }
-  })
-}
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
@@ -147,16 +128,17 @@ let fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+  //TODO: lazy-load the map
+  //addMarkersToMap();
 }
 
 /**
  * Create img element :
  *	<img
- *	 src=${url/photo_name}_500.jpg alt="<name> restaurant"
+ *	 src=${url/photo_name}_500.webp alt="<name> restaurant"
  *	 sizes="(min-width: 800px) 210px, 28vw"
- *	 srcset="${url/photo_name}_160.jpg 200w,
- *				    ${url/photo_name}_200.jpg 200w"
+ *	 srcset="${url/photo_name}_160.webp 200w,
+ *				    ${url/photo_name}_200.webp 200w"
  *  >
  */
 let createRestaurantImageDomElement = (restaurant) => {
@@ -167,8 +149,8 @@ let createRestaurantImageDomElement = (restaurant) => {
   if (defaultRestImageUrl) {
     const imageUrlWithoutExtention = defaultRestImageUrl.replace(/\.[^/.]+$/, "");
     image.sizes = "28vw";
-    image.src = `${imageUrlWithoutExtention}_250.jpg`;
-    image.srcset = `${imageUrlWithoutExtention}_250.jpg 250w, ${imageUrlWithoutExtention}_150.jpg 150w`;
+    image.src = `${imageUrlWithoutExtention}_250.webp`;
+    image.srcset = `${imageUrlWithoutExtention}_250.webp 250w, ${imageUrlWithoutExtention}_150.webp 150w`;
   } else {
     image.src = `img/image_not_available.png`;
   }
@@ -208,7 +190,7 @@ let createRestaurantHTML = (restaurant) => {
  * Add markers for current restaurants to the map.
  */
 let addMarkersToMap = (restaurants = self.restaurants) => {
-  if (!google) return;
+  if (typeof google === "undefined") return;
 
   restaurants.forEach(restaurant => {
     // Add marker to the map

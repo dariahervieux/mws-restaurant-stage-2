@@ -64,48 +64,47 @@ nav {
   justify-content: center; /*centering the contents*/
   background-color: #252831;
   text-align:center;
+
+  h1 {
+    margin: auto;
+    a {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 200;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+  }
 }
-nav h1 {
-  margin: auto;
-}
-nav h1 a {
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 200;
-  letter-spacing: 10px;
-  text-transform: uppercase;
-}
+
 #breadcrumb {
     padding: 10px 16px;
     list-style: none;
     background-color: #eee;
     font-size: 0.9rem;
     margin: 0;
+    /* Display list items side by side */
+    li {
+      display: inline;
+      /* Add a color to all links inside the list */
+      a {
+        color: #165C92;
+        text-decoration: none;
+      }
+      /* Add a color on mouse-over */
+      a:hover {
+        color: #01447e;
+        text-decoration: underline;
+      }
+    }
+    /* Add a slash symbol (/) before/behind each list item */
+    li+li:before {
+      padding: 8px;
+      color: black;
+      content: "/\00a0";
+    }
 }
 
-/* Display list items side by side */
-#breadcrumb li {
-    display: inline;
-}
-
-/* Add a slash symbol (/) before/behind each list item */
-#breadcrumb li+li:before {
-    padding: 8px;
-    color: black;
-    content: "/\00a0";
-}
-
-/* Add a color to all links inside the list */
-#breadcrumb li a {
-    color: #165C92;
-    text-decoration: none;
-}
-
-/* Add a color on mouse-over */
-#breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
-}
 /* ====================== Map ====================== */
 #map {
   height: 400px;

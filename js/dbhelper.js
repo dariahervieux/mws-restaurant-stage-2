@@ -1,5 +1,4 @@
-//import {idb} from './libs/idb/idb.js';
-//import * as idb from './libs/idb/idb.js';
+import * as idb from 'idb';
 
 /**
  * Common database helper functions.
@@ -35,7 +34,7 @@ class DBHelper {
   static openDatabase() {
     // No service worker support =>
     // we don't care about having a database
-    if (!navigator.serviceWorker || !self.idb) {
+    if (!navigator.serviceWorker) {
       return Promise.resolve();
     }
 

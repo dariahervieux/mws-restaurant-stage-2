@@ -4,8 +4,6 @@
 <head>
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
   <link rel="stylesheet" href="css/responsive-details.css">
   <title>Restaurant Info</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,13 +48,36 @@
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-  <script type="application/javascript" charset="utf-8" src="js/common.js"></script>
-  <script type="module" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="module" src="js/restaurant_info.js"></script>
-  <script type="module" charset="utf-8" src="js/libs/idb/idb.js"></script>
+  <script>
+    /**
+     * Initialize Google map, called from HTML.
+     */
+
+    window.initMap = () => {
+      //TODO: lazy load the map
+      if (typeof self.restaurant === "undefined") return;
+
+      const restaurant = self.restaurant;
+      
+      self.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: restaurant.latlng,
+        scrollwheel: false
+      });
+      // Set title on map iframe once map has loaded
+      self.map.addListener('tilesloaded', () => {
+        const mapFrame = document.querySelector('#map iframe');
+        mapFrame.setAttribute('title', `Google map with ${restaurant.name} restaurant location`);
+      });
+      DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+    }
+  </script>
+  
+  <script async defer type="module" charset="utf-8" src="js/restaurant_info.js"></script>
+  <!-- <script async defer type="module" charset="utf-8" src="js/libs/idb/idb.js"></script> -->
  
   <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=initMap"></script>
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=window.initMap"></script> -->
 
 </body>
 

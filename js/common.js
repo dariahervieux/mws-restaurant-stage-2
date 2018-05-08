@@ -1,4 +1,4 @@
-let registerServiceWorker = () => {
+export default function registerServiceWorker() {
   if (!navigator.serviceWorker) return;
 
   window.addEventListener('load', function () {
@@ -11,3 +11,4 @@ let registerServiceWorker = () => {
     });
   });
 }
+

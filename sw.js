@@ -13,10 +13,8 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
-        'js/common.js',
-        'js/main.js',
         'js/restaurant_info.js',
-        'js/dbhelper.js',
+        'js/main.js',
         'css/styles.css',
         'css/responsive.css',
         'css/responsive-details.css',
@@ -80,10 +78,9 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
-
 async function servePhoto(request) {
   //cut off the _<number> prefix
-  var storageUrl = request.url.replace(/_\d+\.jpg$/, '');
+  var storageUrl = request.url.replace(/_\d+\.webp$/, '');
 
   const cache = await caches.open(contentImgsCache);
 

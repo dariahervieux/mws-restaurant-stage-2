@@ -12,9 +12,9 @@
   "author": "",
   "license": "",
   "bugs": {
-    "url": "https://github.com/dariahervieux/mws-restaurant-stage-1/issues"
+    "url": "https://github.com/dariahervieux/mws-restaurant-stage-2/issues"
   },
-  "homepage": "https://github.com/dariahervieux/mws-restaurant-stage-1#readme",
+  "homepage": "https://github.com/dariahervieux/mws-restaurant-stage-2#readme",
   "devDependencies": {
     "browser-sync": "^2.24.0",
     "del": "^3.0.0",
@@ -24,11 +24,18 @@
     "gulp-concat": "^2.6.1",
     "gulp-connect": "latest",
     "gulp-eslint": "^4.0.2",
+    "gulp-if": "^2.0.2",
     "gulp-npm-dist": "^1.0.1",
     "gulp-rename": "latest",
-    "gulp-responsive": "latest",
+    "gulp-responsive": "^2.10.0",
+    "gulp-rollup": "^2.16.2",
     "gulp-sass": "^4.0.1",
-    "gulp-uglify": "^3.0.0"
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify-es": "^1.0.1",
+    "minimist": "^1.2.0",
+    "rollup": "^0.58.2",
+    "rollup-plugin-commonjs": "^8.4.1",
+    "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
     "idb": "^2.1.1"
