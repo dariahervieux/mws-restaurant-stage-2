@@ -22,7 +22,7 @@
       <div id="map" role="application" aria-label="Google map with restaurant locations"></div>
     </section>
     
-    <section>
+    <section style="display:flex; flex-direction:column;">
       <div class="filter-options">
         <div>
           <h2>Filter Results</h2>
@@ -36,50 +36,29 @@
           <select id="cuisines-select" aria-label="Cusines" name="cuisines" onchange="self.updateRestaurants()">
             <option value="all">All Cuisines</option>
           </select>
+        </div>        
       </div>
-      </div>
+      <div style="max-width: 100%;padding-right: 15px;"><button id="toggle-map" onclick="toggleMap()">See on Map</button></div>
       <ul id="restaurants-list"></ul>
     </section>
   </main>
-
-  <script>
-    /**
-     * Initialize Google map, called from HTML.
-     */
-    window.initMap = () => {
-      let loc = {
-        lat: 40.722216,
-        lng: -73.987501
-      };
-
-      if (typeof google === "undefined") { 
-        console.error('google is not defined!');
-        return;
-      }
-      
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: loc,
-        scrollwheel: false
-      });
-      // Set title on map iframe once map has loaded
-      self.map.addListener('tilesloaded', () => {
-        const mapFrame = document.querySelector('#map iframe');
-        mapFrame.setAttribute('title', 'Google map with restaurant locations');
-      }
-      );
-    }
-  </script>
-
-  <!-- <script defer type="module" charset="utf-8" src="js/libs/idb/idb.js"></script> -->
-  <script defer type="module" charset="utf-8" src="js/main.js"></script>
-  <!-- <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=window.initMap"></script> -->
-
-
+ 
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
+  <script async defer type="module" charset="utf-8" src="js/main.js"></script>
+  <script async>
+    function toggleMap() {
+      window.addGMapsToDom();
+      const opened = !!self.opened;
+      const newStyle = (opened === true) ? 'display:none;': 'display:inline-block;';
+      document.getElementById('map-container').style = newStyle;
+      document.getElementById('toggle-map').innerText= (opened === true) ? 'See on Map' : 'Close Map';
+      self.opened = !opened;
+    }
+  </script>
+ 
 </body>
 
 </html>

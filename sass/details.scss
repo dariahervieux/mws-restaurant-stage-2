@@ -1,0 +1,105 @@
+/* ====================== Navigation ====================== */
+#breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eee;
+    font-size: 0.9rem;
+    margin: 0;
+    /* Display list items side by side */
+    li {
+      display: inline;
+      /* Add a color to all links inside the list */
+      a {
+        color: #165C92;
+        text-decoration: none;
+      }
+      /* Add a color on mouse-over */
+      a:hover {
+        color: #01447e;
+        text-decoration: underline;
+      }
+    }
+    /* Add a slash symbol (/) before/behind each list item */
+    li+li:before {
+      padding: 8px;
+      color: black;
+      content: "/\00a0";
+    }
+}
+
+/* ====================== Restaurant Details ====================== */
+
+#restaurant-name {
+    /*color: #f18200;*/
+    color: #9E3314;
+    font-family: Arial,sans-serif;
+    font-size: 1.1rem;
+    font-weight: 200;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  
+  #restaurant-img {
+    max-width: 100%;
+  }
+  
+  .restaurant-img-none {
+    display: none;
+  }
+  
+  #restaurant-address {
+    font-size: 1rem;
+  }
+  #restaurant-cuisine {
+    background-color: #333;
+    color: #ddd;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 10px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  #restaurant-container, #reviews-container {
+    padding: 15px 15px;
+      max-width: 100%;
+  }
+  
+  #restaurant-hours {
+    font-size: 1rem;
+    padding: 0 20px;
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  
+  #reviews-container h3 {
+    color: #9E3314;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    padding-bottom: 1pt;
+  }
+  #reviews-list {
+    margin: 0;
+    padding: 0;
+  }
+  #reviews-list li {
+    background-color: #fff;
+    display: block;
+    list-style-type: none;
+    margin: 0 0 10px;
+    overflow: hidden;
+    padding: 0 20px;
+    position: relative;
+  }
+  #reviews-list li p {
+    margin: 10px;
+    font-size: 0.8rem;
+  }
+  #restaurant-hours td {
+    color: #666;
+  }
+  

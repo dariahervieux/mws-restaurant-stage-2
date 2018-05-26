@@ -27,6 +27,9 @@ const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
 const sourcemaps = require('gulp-sourcemaps');
 
+//html related
+const htmlmin = require('gulp-htmlmin');
+
 gulp.task('img:copy', function () {
   return gulp.src(['img/**/*'])
     .pipe(gulp.dest('build/img'));
@@ -109,6 +112,7 @@ gulp.task('js:copy', function () {
 
 gulp.task('html:copy', function () {
   return gulp.src('./*.html')
+    .pipe(gulpif(compact, htmlmin({collapseWhitespace: true, removeComments : true})))
     .pipe(gulp.dest('./build/'));
 });
 

@@ -9,44 +9,62 @@ let dbHelper;
  */
 registerServiceWorker();
 
+/**
+ * Initialize Google map, called from HTML.
+ */
+window.initMap = () => {
+  if (typeof self.restaurant === "undefined") return;
+  if (self.map) {
+    console.log("Map is already initialized");
+  }
+
+  const restaurant = self.restaurant;
+  
+  self.map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: restaurant.latlng,
+    scrollwheel: false
+  });
+  // Set title on map iframe once map has loaded
+  self.map.addListener('tilesloaded', () => {
+    const mapFrame = document.querySelector('#map iframe');
+    mapFrame.setAttribute('title', `Google map with ${restaurant.name} restaurant location`);
+  });
+  DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+}
+
 
 window.addEventListener('load', () => {
   dbHelper = new DBHelper();
   dbHelper.initData()
     .then(() => {
-      const callback = (error) => {
-        if (error) { // Got an error!
-          console.error(error);
-        } else {
+      fetchRestaurantFromURL()
+        .then( restaurant => {
+          self.restaurant = restaurant;
+          if (!restaurant) {
+            console.error('No restaurant found');
+            return;
+          }
+          fillRestaurantHTML();
           fillBreadcrumb();
-        }
-      }
-      fetchRestaurantFromURL(callback);
+          window.initMap();
+        })
+        .catch(error => console.error(error));
     });
 });
 
 /**
  * Get current restaurant from page URL.
  */
-let fetchRestaurantFromURL = (callback) => {
+let fetchRestaurantFromURL = () => {
   if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
-    return;
+    return self.restaurant;
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
-    let error = 'No restaurant id in URL'
-    callback(error, null);
+    throw Error('No restaurant id in URL');
   } else {
-    dbHelper.fetchRestaurantById(id, (error, restaurant) => {
-      self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
-        return;
-      }
-      fillRestaurantHTML();
-      callback(null, restaurant)
-    });
+    return dbHelper.fetchRestaurantById(id);
   }
 }
 

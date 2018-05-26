@@ -83,125 +83,119 @@ class DBHelper {
   /**
    * Fetch all restaurants.
    */
-  fetchRestaurants(callback) {
-    if (!this.dbPromise) return;
+  fetchRestaurants() {
+    if (!this.dbPromise) return [];
 
-    this.dbPromise.then(async function (db) {
-      if (!db) return;
+    return this.dbPromise.then(function (db) {
+      if (!db) return [];
 
       const tx = db.transaction('restaurants');
       const store = tx.objectStore('restaurants');
 
-      const restaurants = await store.getAll();
-      callback(null, restaurants);
+      return store.getAll();
     });
   }
 
   /**
    * Fetch a restaurant by its ID.
    */
-  fetchRestaurantById(id, callback) {
-    // fetch all restaurants with proper error handling.
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        const restaurant = restaurants.find(r => r.id == id);
-        if (restaurant) { // Got the restaurant
-          callback(null, restaurant);
-        } else { // Restaurant does not exist in the database
-          callback('Restaurant does not exist', null);
-        }
-      }
+  fetchRestaurantById(id) {
+    if (!this.dbPromise) return;
+    
+    return this.dbPromise.then(function (db) {
+      if (!db) return;
+
+      const tx = db.transaction('restaurants');
+      const store = tx.objectStore('restaurants');
+
+      return store.get(parseInt(id));
     });
   }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
-  fetchRestaurantByCuisine(cuisine, callback) {
-    // Fetch all restaurants  with proper error handling
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given cuisine type
-        const results = restaurants.filter(r => r.cuisine_type == cuisine);
-        callback(null, results);
-      }
+  fetchRestaurantByCuisine(cuisine) {
+    if (!this.dbPromise) return;
+    return this.dbPromise.then(function (db) {
+      if (!db)  return;
+      const tx = db.transaction('restaurants');
+      const store = tx.objectStore('restaurants');
+      const cusineIdx = store.index('by-cusine');
+      return cusineIdx.getAll(cuisine);     
     });
   }
 
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
-  fetchRestaurantByNeighborhood(neighborhood, callback) {
-    // Fetch all restaurants
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given neighborhood
-        const results = restaurants.filter(r => r.neighborhood == neighborhood);
-        callback(null, results);
-      }
+  fetchRestaurantByNeighborhood(neighborhood) {
+    if (!this.dbPromise) return;
+    return this.dbPromise.then(function (db) {
+      if (!db)  return;
+      const tx = db.transaction('restaurants');
+      const store = tx.objectStore('restaurants');
+      const cusineIdx = store.index('by-neighborhood');
+      return cusineIdx.getAll(neighborhood);     
     });
   }
 
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
-  fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    // Fetch all restaurants
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        let results = restaurants
-        if (cuisine != 'all') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'all') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        callback(null, results);
-      }
-    });
+  async fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
+    if (cuisine != 'all') { // filter by cuisine
+      return this.fetchRestaurantByCuisine(cuisine)
+        .then(restaurantsByCusine => {
+          if (neighborhood != 'all') { // filter by neighborhood
+            restaurantsByCusine = restaurantsByCusine.filter(r => r.neighborhood == neighborhood);
+          }
+          return restaurantsByCusine;
+        });
+    }
+    if (neighborhood != 'all') { // filter by neighborhood
+      return this.fetchRestaurantByNeighborhood(neighborhood);
+    }
+    return this.fetchRestaurants();
   }
 
   /**
-   * Fetch all neighborhoods with proper error handling.
+   * Fetch all neighborhoods.
+   * Returns a Promise.
    */
-  fetchNeighborhoods(callback) {
-    // Fetch all restaurants
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all neighborhoods from all restaurants
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        // Remove duplicates from neighborhoods
-        const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        callback(null, uniqueNeighborhoods);
-      }
-    });
+  fetchNeighborhoods() {
+    return this.getUniqueValuesFromIndex('by-neighborhood', 'neighborhood');
   }
 
   /**
-   * Fetch all cuisines with proper error handling.
+   * Fetch all cuisines.
+   * Returns a Promise.
    */
-  fetchCuisines(callback) {
-    // Fetch all restaurants
-    this.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all cuisines from all restaurants
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        // Remove duplicates from cuisines
-        const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        callback(null, uniqueCuisines);
-      }
+  fetchCuisines() {
+    return this.getUniqueValuesFromIndex('by-cusine', 'cuisine_type');
+  }
+
+
+  getUniqueValuesFromIndex(indexName, indexedFieldName) {
+    if (!this.dbPromise) return;
+    return this.dbPromise.then(async function (db) {
+      if (!db)
+        return;
+      const uniqueValues = [];
+      const tx = db.transaction('restaurants');
+      const store = tx.objectStore('restaurants');
+      const cusineIdx = store.index(indexName);
+      let nextValue = null;
+      return cusineIdx.openCursor().then(function cursorIterate(cursor) {
+        if (!cursor)
+          return uniqueValues;
+        const value = cursor.value[indexedFieldName];
+        if (nextValue != value) {
+          uniqueValues.push(cursor.value[indexedFieldName]);
+          nextValue = cursor.value[indexedFieldName];
+        }
+        return cursor.continue().then(cursorIterate);
+      });
     });
   }
 

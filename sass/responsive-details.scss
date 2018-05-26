@@ -1,5 +1,9 @@
 @charset "utf-8";
-@import 'styles';
+
+@import 'common';
+@import 'details';
+
+@import 'common-responsive-from-600';
 
 /* ====================== Main content ============================== */
 #maincontent {
