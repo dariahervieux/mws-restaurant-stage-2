@@ -1,7 +1,6 @@
 /*eslint-env node*/
 const gulp = require('gulp');
 const del = require('del');
-const rename = require('gulp-rename');
 const log = require('fancy-log');
 const gulpif = require('gulp-if');
 
@@ -112,7 +111,10 @@ gulp.task('js:copy', function () {
 
 gulp.task('html:copy', function () {
   return gulp.src('./*.html')
-    .pipe(gulpif(compact, htmlmin({collapseWhitespace: true, removeComments : true})))
+    .pipe(gulpif(compact,
+      htmlmin({
+        collapseWhitespace: true, removeComments : true,
+        minifyCSS: true, minifyJS: true})))
     .pipe(gulp.dest('./build/'));
 });
 

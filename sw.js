@@ -15,8 +15,17 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         'js/restaurant_info.js',
         'js/main.js',
-        'css/responsive.css',
-        'css/responsive-details.css',
+
+        'css/main.css',        
+        'css/common-from-600.css',
+        'css/main-from-530.css',
+        'css/main-from-550.css',
+        'css/main-from-710-to-999.css',
+        'css/main-from-1000.css',
+        'css/main-from-1800.css',
+        'css/details.css',
+        'css/details-from-600.css',
+
         'img/image_not_available.png',
         'index.html',
         'restaurant.html',

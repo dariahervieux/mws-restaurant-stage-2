@@ -1,0 +1,7 @@
+/* ====================== Restaurants list ============================== */
+
+@media screen and (min-width: 710px) and (max-width: 999px) {
+    #restaurants-list {
+        grid-template-columns: repeat(3, 29vw);
+    }
+}

@@ -2,8 +2,191 @@
 <html lang="en">
 
 <head>
+  <link rel="preload" href="css/main.css" as="style">
+  <link rel="preload" href="css/common-from-600.css" media="screen and (min-width: 600px)" as="style">
+  <link rel="preload" href="css/main-from-530.css" media="screen and (min-width: 530px)" as="style">
+  <link rel="preload" href="css/main-from-550.css" media="screen and (min-width: 550px)" as="style">
+  <link rel="preload" href="css/main-from-710-to-999.css" media="screen and (min-width: 710px) and (max-width: 999px)" as="style">
+  <style>
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+      line-height: 1.5;
+      background-color: #fdfdfd;
+      margin: 0;
+      position: relative;
+    }
+
+    a {
+      color: #9E3314;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      color: #3397db;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0 0.3em;
+    }
+
+    footer,
+    header,
+    nav,
+    section {
+      display: block;
+    }
+
+    #maincontent {
+      background-color: #f3f3f3;
+      min-height: 100%;
+    }
+
+    footer#footer {
+      background-color: #444;
+      color: #D9D9D9;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 15px;
+      text-align: center;
+      text-transform: uppercase;
+      max-width: 100%;
+    }
+
+    footer#footer a {
+      color: whitesmoke;
+    }
+
+    #toggle-map {
+      background-color: #9E3314;
+      color: #fff;
+      display: block;
+      font-size: 1rem;
+      padding: 10px 30px 10px;
+      margin: 3px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      border-radius: 5px;
+      border: unset;
+      float: right;
+    }
+
+    nav {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      background-color: #252831;
+      text-align: center;
+    }
+
+    nav h1 {
+      margin: auto;
+    }
+
+    nav h1 a {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 200;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+
+    #map {
+      height: 400px;
+      width: 100vw;
+      background-color: #ccc;
+    }
+
+    #map-container {
+      display: none;
+    }
+
+    #main-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #toggle-container {
+      max-width: 100%;
+      padding-right: 15px;
+    }
+
+    /* ====================== Filters ====================== */
+
+    .filter-options {
+      width: 100%;
+      background-color: #165C92;
+      align-items: center;
+      display: flex;
+      /*allow content to flow*/
+      flex-wrap: wrap;
+      /*let elements wrap*/
+    }
+
+    .filter-options div {
+      width: 100%;
+      padding: 10px;
+    }
+
+    .filter-options h2 {
+      color: white;
+      font-size: 1rem;
+      white-space: nowrap;
+      /*show text in one line*/
+      font-weight: normal;
+      line-height: 1;
+      margin: 0;
+      width: 100%;
+    }
+
+    .filter-options select {
+      background-color: white;
+      border: 1px solid #fff;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      height: 35px;
+      letter-spacing: 0;
+      padding: 0 10px;
+      min-width: 100%;
+      /*take the full width*/
+      max-width: 100%;
+      border-radius: 5px;
+      /*just to make it less square*/
+    }
+
+    /* ====================== Skip Link ====================== */
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      color: white;
+      padding: 8px;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0px;
+    }
+  </style>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/common-from-600.css" media="screen and (min-width: 600px)">
+  <link rel="stylesheet" href="css/main-from-530.css" media="screen and (min-width: 530px)">
+  <link rel="stylesheet" href="css/main-from-550.css" media="screen and (min-width: 550px)">
+  <link rel="stylesheet" href="css/main-from-710-to-999.css" media="screen and (min-width: 710px) and (max-width: 999px)">
+  <link rel="stylesheet" href="css/main-from-1000.css" media="screen and (min-width: 1000px)">
+  <link rel="stylesheet" href="css/main-from-1800.css" media="screen and (min-width: 1800px)">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>Restaurant Reviews</title>
@@ -13,7 +196,9 @@
   <header>
     <a href="#maincontent" class="skip-link">Skip to main content</a>
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1>
+        <a href="/">Restaurant Reviews</a>
+      </h1>
     </nav>
   </header>
 
@@ -21,8 +206,8 @@
     <section id="map-container">
       <div id="map" role="application" aria-label="Google map with restaurant locations"></div>
     </section>
-    
-    <section style="display:flex; flex-direction:column;">
+
+    <section id="main-section">
       <div class="filter-options">
         <div>
           <h2>Filter Results</h2>
@@ -36,15 +221,20 @@
           <select id="cuisines-select" aria-label="Cusines" name="cuisines" onchange="self.updateRestaurants()">
             <option value="all">All Cuisines</option>
           </select>
-        </div>        
+        </div>
       </div>
-      <div style="max-width: 100%;padding-right: 15px;"><button id="toggle-map" onclick="toggleMap()">See on Map</button></div>
+      <div id="toggle-container">
+        <button id="toggle-map" onclick="toggleMap()">See on Map</button>
+      </div>
       <ul id="restaurants-list"></ul>
     </section>
   </main>
- 
+
   <footer id="footer">
-    Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    Copyright (c) 2017
+    <a href="/">
+      <strong>Restaurant Reviews</strong>
+    </a> All Rights Reserved.
   </footer>
 
   <script async defer type="module" charset="utf-8" src="js/main.js"></script>
@@ -52,13 +242,13 @@
     function toggleMap() {
       window.addGMapsToDom();
       const opened = !!self.opened;
-      const newStyle = (opened === true) ? 'display:none;': 'display:inline-block;';
+      const newStyle = (opened === true) ? 'display:none;' : 'display:inline-block;';
       document.getElementById('map-container').style = newStyle;
-      document.getElementById('toggle-map').innerText= (opened === true) ? 'See on Map' : 'Close Map';
+      document.getElementById('toggle-map').innerText = (opened === true) ? 'See on Map' : 'Close Map';
       self.opened = !opened;
     }
   </script>
- 
+
 </body>
 
 </html>

@@ -2,9 +2,157 @@
 <html lang="en">
 
 <head>
-  <!-- Normalize.css for better cross-browser consistency -->
+  <link rel="preload" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <link rel="preload" href="css/details.css" as="style">
+  <link rel="preload" href="css/details-from-600.css" as="style" media="screen and (min-width: 600px)">
+
+  <style>
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+      line-height: 1.5;
+      background-color: #fdfdfd;
+      margin: 0;
+      position: relative;
+    }
+
+    a {
+      color: #9E3314;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      color: #3397db;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0 0.3em;
+    }
+
+    footer,
+    header,
+    nav,
+    section {
+      display: block;
+    }
+
+    #breadcrumb {
+      padding: 10px 16px;
+      list-style: none;
+      background-color: #eee;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Display list items side by side */
+
+    #breadcrumb li {
+      display: inline;
+    }
+
+    /* Add a color to all links inside the list */
+
+    #breadcrumb li a {
+      color: #165C92;
+      text-decoration: none;
+    }
+
+
+    #maincontent {
+      background-color: #f3f3f3;
+      min-height: 100%;
+    }
+
+    footer#footer {
+      background-color: #444;
+      color: #D9D9D9;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 15px;
+      text-align: center;
+      text-transform: uppercase;
+      max-width: 100%;
+    }
+
+    footer#footer a {
+      color: whitesmoke;
+    }
+
+    #toggle-map {
+      background-color: #9E3314;
+      color: #fff;
+      display: block;
+      font-size: 1rem;
+      padding: 10px 30px 10px;
+      margin: 3px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      border-radius: 5px;
+      border: unset;
+      float: right;
+    }
+
+    nav {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      background-color: #252831;
+      text-align: center;
+    }
+
+    nav h1 {
+      margin: auto;
+    }
+
+    nav h1 a {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 200;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+    }
+
+    #map {
+      height: 400px;
+      width: 100vw;
+      background-color: #ccc;
+    }
+
+    #map-container {
+      display: none;
+    }
+
+    #maincontent {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #restaurant-container {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    #toggle-container {
+      max-width: 100%;
+    }
+  </style>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/responsive-details.css">
+  <link rel="stylesheet" href="css/details.css">
+  <link rel="stylesheet" href="css/details-from-600.css" media="screen and (min-width: 600px)">
+
+
   <title>Restaurant Info</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
@@ -14,10 +162,14 @@
   <header>
     <a href="#maincontent" class="skip-link">Skip to main content</a>
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1>
+        <a href="/">Restaurant Reviews</a>
+      </h1>
     </nav>
     <ol id="breadcrumb" aria-label="Breadcrumb" role="navigation">
-      <li><a href="/">Home</a></li>
+      <li>
+        <a href="/">Home</a>
+      </li>
     </ol>
   </header>
 
@@ -26,10 +178,12 @@
       <div id="map" role="application" aria-label="Google map with the restaurant location"></div>
     </section>
 
-   
-   <div id="content">
+
+    <div id="content">
       <section id="restaurant-container">
-          <div style="max-width: 100%;padding-right: 15px;"><button id="toggle-map" onclick="toggleMap()">See on Map</button></div>
+        <div id="toggle-container">
+          <button id="toggle-map" onclick="toggleMap()">See on Map</button>
+        </div>
         <h2 id="restaurant-name"></h2>
         <p id="restaurant-address"></p>
         <p id="restaurant-cuisine"></p>
@@ -41,27 +195,29 @@
       <section id="reviews-container">
         <ul id="reviews-list"></ul>
       </section>
-   </div>
+    </div>
 
   </main>
 
   <footer id="footer">
-    Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    Copyright (c) 2017
+    <a href="/">
+      <strong>Restaurant Reviews</strong>
+    </a> All Rights Reserved.
   </footer>
 
-  
+
   <script async defer type="module" charset="utf-8" src="js/restaurant_info.js"></script>
   <script async>
-      function toggleMap() {
-        const opened = !!self.opened;
-        const newStyle = (opened === true) ? 'display:none;': 'display:inline-block;';
-        document.getElementById('map-container').style = newStyle;
-        document.getElementById('toggle-map').innerText= (opened === true) ? 'See on Map' : 'Close Map';
-        self.opened = !opened;
-      }
-    </script>
-  <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=window.initMap"></script>
+    function toggleMap() {
+      window.addGMapsToDom();
+      const opened = !!self.opened;
+      const newStyle = (opened === true) ? 'display:none;' : 'display:inline-block;';
+      document.getElementById('map-container').style = newStyle;
+      document.getElementById('toggle-map').innerText = (opened === true) ? 'See on Map' : 'Close Map';
+      self.opened = !opened;
+    }
+  </script>
 
 </body>
 

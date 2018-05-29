@@ -13,6 +13,10 @@ registerServiceWorker();
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+  if (typeof google === "undefined") {
+    console.warn('google is not defined!');
+    return;
+  }
   if (typeof self.restaurant === "undefined") return;
   if (self.map) {
     console.log("Map is already initialized");

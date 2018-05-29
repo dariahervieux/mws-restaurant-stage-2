@@ -15,7 +15,7 @@ registerServiceWorker();
  */
 window.initMap = () => {
   if (typeof google === "undefined") {
-    console.error('google is not defined!');
+    console.warn('google is not defined!');
     return;
   }
   const loc = {
@@ -35,23 +35,9 @@ window.initMap = () => {
   );
   addMarkersToMap();
 }
-window.addGMapsToDom = () => {
-  let scriptAdded = !!self.scriptAdded;
-  if (!scriptAdded) {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://maps.googleapis.com/maps/api/js?' +
-      'key=AIzaSyCVSdM77QDajKL5gqlQO1knGXw4N_Px_gU&libraries=places&callback=window.initMap';
-    document.body.appendChild(script);
-    self.scriptAdded = true;
-  }
-}
-if (window.innerWidth > 600) {
-  window.addGMapsToDom();
-  self.scriptAdded = true;
-}
 
-/** Configure intersection observer as soon as initial HTML is ready */
+
+/** Configure intersection observer as soon as restaurants HTML is ready */
 let setUpImgIntersectionObserver = () => {
   //make an Array of images
   var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));

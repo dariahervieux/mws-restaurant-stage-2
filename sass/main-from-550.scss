@@ -1,0 +1,14 @@
+/* ====================== Restaurants list ============================== */
+@media screen and (min-width: 550px) {
+    #restaurants-list li {
+        display: block;
+    }
+
+    #restaurants-list {
+        display: grid;
+        grid-template-columns: repeat(2, 43vw);
+        align-items: center;
+        grid-gap: 0.3em;
+        justify-content: space-evenly;
+    }
+}
