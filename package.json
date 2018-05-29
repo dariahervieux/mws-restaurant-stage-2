@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Mobile Web Specialist - Certification Project - Stage 2",
   "scripts": {
-    "start": "http-server build"
+    "start": "http-server build -c 86400 -g"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,9 @@
     "gulp-concat": "^2.6.1",
     "gulp-connect": "latest",
     "gulp-eslint": "^4.0.2",
+    "gulp-gzip": "^1.4.2",
     "gulp-htmlmin": "^4.0.0",
     "gulp-if": "^2.0.2",
-    "gulp-npm-dist": "^1.0.1",
     "gulp-responsive": "^2.10.0",
     "gulp-rollup": "^2.16.2",
     "gulp-sass": "^4.0.1",

@@ -4,9 +4,6 @@ const del = require('del');
 const log = require('fancy-log');
 const gulpif = require('gulp-if');
 
-//getting dist dependencies from npm_modules
-const npmDist = require('gulp-npm-dist');
-
 //css-related
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
@@ -28,6 +25,9 @@ const sourcemaps = require('gulp-sourcemaps');
 
 //html related
 const htmlmin = require('gulp-htmlmin');
+
+//general purpose
+const gzip = require('gulp-gzip');
 
 gulp.task('img:copy', function () {
   return gulp.src(['img/**/*'])
@@ -80,13 +80,12 @@ compact = (compact === 'true') ? true : false;
 
 gulp.task('js:sw:copy', function () {
   return gulp.src(['sw.js'])
-    .pipe(gulpif(compact, uglify()))  
+    .pipe(gulpif(compact, uglify(), gzip({ threshold: 1024 })))
     .pipe(gulp.dest('build'));
 });
 
 
 gulp.task('js:copy', function () {
-  let deps = npmDist();
   return gulp.src(['./js/restaurant_info.js','./js/common.js','./js/dbhelper.js','./js/main.js', './node_modules/idb/**/*.js']/*.concat(deps)*/)
     .pipe(sourcemaps.init())
     .pipe(rollup({
@@ -106,6 +105,9 @@ gulp.task('js:copy', function () {
     }))
     .pipe(gulpif(compact, uglify()))
     .pipe(sourcemaps.write())
+    .pipe(gulpif(compact,
+      gzip({ threshold: 1024 }))
+    )
     .pipe(gulp.dest('build/js'));
 });
 
@@ -115,6 +117,9 @@ gulp.task('html:copy', function () {
       htmlmin({
         collapseWhitespace: true, removeComments : true,
         minifyCSS: true, minifyJS: true})))
+    .pipe(gulpif(compact,
+      gzip({ threshold: 1024 }))
+    )
     .pipe(gulp.dest('./build/'));
 });
 
@@ -124,6 +129,9 @@ gulp.task('css:process', function () {
     .pipe(autoprefixer({
       browsers: ['last 2 versions']
     }))
+    .pipe(gulpif(compact,
+      gzip({ threshold: 1024 }))
+    )
     .pipe(gulp.dest('build/css'));
 });
 
