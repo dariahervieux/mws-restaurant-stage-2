@@ -2,9 +2,13 @@
 <html lang="en">
 
 <head>
-  <link rel="preload" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preload" href="css/details.css" as="style">
   <link rel="preload" href="css/details-from-600.css" as="style" media="screen and (min-width: 600px)">
+
+  <meta name="theme-color" content="#252831"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
 
   <style>
     html {
@@ -68,6 +72,7 @@
     #maincontent {
       background-color: #f3f3f3;
       min-height: 100%;
+      max-width: 100%;
     }
 
     footer#footer {
@@ -141,11 +146,11 @@
     #restaurant-container {
       display: flex;
       flex-wrap: wrap;
-      flex-direction: column;
     }
 
     #toggle-container {
       max-width: 100%;
+      width: 100%;
     }
   </style>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
@@ -154,8 +159,7 @@
 
 
   <title>Restaurant Info</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
+
 </head>
 
 <body>

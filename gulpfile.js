@@ -29,6 +29,11 @@ const htmlmin = require('gulp-htmlmin');
 //general purpose
 const gzip = require('gulp-gzip');
 
+gulp.task('resources:copy', function () {
+  return gulp.src(['manifest.webmanifest'])
+    .pipe(gulp.dest('build'));
+});
+
 gulp.task('img:copy', function () {
   return gulp.src(['img/**/*'])
     .pipe(gulp.dest('build/img'));
@@ -137,7 +142,7 @@ gulp.task('css:process', function () {
 
 
 gulp.task('process', gulp.series(['css:process', 'img:process']));
-gulp.task('copy', gulp.series(['js:sw:copy', 'js:copy', 'html:copy']));
+gulp.task('copy', gulp.series(['resources:copy','js:sw:copy', 'js:copy', 'html:copy']));
 gulp.task('clean', function () {
   return del([
     'build/**/*'

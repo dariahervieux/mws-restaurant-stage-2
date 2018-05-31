@@ -1,0 +1,31 @@
+{
+    "name": "RestaurantsReviews",
+    "short_name": "RR",
+    "lang": "en-US",
+    "start_url": "http://localhost:8080/",
+    "display": "fullscreen",
+    "background_color": "#fdfdfd",
+    "theme_color": "#252831",
+    "description": "Restaurants review application: Udacity Mobile Web Specialist Certification - Evaluation project.",
+    "icons": [
+        {    
+            "src": "img/icon/app-icon.svg",
+            "type": "image/svg"
+        },
+        {    
+            "src": "img/icon/app-icon.webp",
+            "type": "image/webp",
+            "sizes": "72x72"
+        },
+        {
+            "src": "img/icon/app-icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+          },
+          {
+            "src": "img/icon/app-icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+          }
+    ]
+}
