@@ -3,6 +3,7 @@
 
 <head>
   <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="preload" href="css/details.css" as="style">
   <link rel="preload" href="css/details-from-600.css" as="style" media="screen and (min-width: 600px)">
 
@@ -186,7 +187,7 @@
     <div id="content">
       <section id="restaurant-container">
         <div id="toggle-container">
-          <button id="toggle-map" onclick="toggleMap()">See on Map</button>
+          <button id="toggle-map" onclick="toggleMap()">Show on Map</button>
         </div>
         <h2 id="restaurant-name"></h2>
         <p id="restaurant-address"></p>
@@ -212,13 +213,13 @@
 
 
   <script async defer type="module" charset="utf-8" src="js/restaurant_info.js"></script>
-  <script async>
+  <script>
     function toggleMap() {
       window.addGMapsToDom();
       const opened = !!self.opened;
       const newStyle = (opened === true) ? 'display:none;' : 'display:inline-block;';
       document.getElementById('map-container').style = newStyle;
-      document.getElementById('toggle-map').innerText = (opened === true) ? 'See on Map' : 'Close Map';
+      document.getElementById('toggle-map').innerText = (opened === true) ? 'Show on Map' : 'Close Map';
       self.opened = !opened;
     }
   </script>

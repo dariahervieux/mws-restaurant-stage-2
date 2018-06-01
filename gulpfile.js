@@ -30,7 +30,7 @@ const htmlmin = require('gulp-htmlmin');
 const gzip = require('gulp-gzip');
 
 gulp.task('resources:copy', function () {
-  return gulp.src(['manifest.webmanifest'])
+  return gulp.src(['manifest.webmanifest', 'favicon.ico'])
     .pipe(gulp.dest('build'));
 });
 

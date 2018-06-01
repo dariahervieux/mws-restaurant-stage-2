@@ -13,6 +13,7 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
+        'favicon.ico',
         'manifest.webmanifest',
 
         'js/restaurant_info.js',
@@ -31,6 +32,7 @@ self.addEventListener('install', function(event) {
         'img/image_not_available.png',
         'img/icon/app-icon.svg',
         'img/icon/app-icon.webp',
+
         'index.html',
         'restaurant.html',
         'https://fonts.gstatic.com/s/roboto/v18/KFOmCnqEu92Fr1Mu4mxK.woff2',
