@@ -54,15 +54,22 @@ After cloning the project run `npm install` from the root folder.
 
 ### Build
 
-From the root folder run `gulp`. This runs projet's task in a sequence:
+From the root folder run `npm run build`. This runs projet's tasks in the following sequence:
 
-1. 'img:clean' - cleaning previously generated images
-2. 'img:process' - generating a set of responsive images (different resolution and compression level) based on a source image.
+1. `lint` - static code analysys,
+2. `clean` - clean build directory,
+3. `copy` - transform anc copy all related resources and code to build directory (images, js, html),
+4. `process` - process (generate/compile) and copy images and css files to build directory,
+5. `watch` - configure and perform live reload on source changes.
+
+Compression option (minify js/html, compress) `--compress true|false` is sIfet to true by default.
+If you don't want copression, you can run `gulp` from the root folder.
+
 
 ### Run
 
 Serving application on localhost:8080, run from the root folder :
-`npm start`
+`npm run serve`
 
 This command starts an https-server with 24h cache time (cache-control max-age header) and gzip option (serving *.gzip if available).
 

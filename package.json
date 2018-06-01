@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Mobile Web Specialist - Certification Project - Stage 2",
   "scripts": {
-    "start": "http-server build -c 86400 -g"
+    "serve": "http-server build -c 86400 -g",
+    "build": "gulp --compress true"
   },
   "repository": {
     "type": "git",
